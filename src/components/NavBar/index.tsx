@@ -4,12 +4,11 @@ import {Link} from 'react-router-dom'
 import { colors } from '../../theme';
 import MenuIcon from '@material-ui/icons/Menu';
 import ClearIcon from '@material-ui/icons/Clear';
-
+import SearchIcon from '@material-ui/icons/Search';
 
 const Index = () => {
 
   const [isMobile, setIsMobile] = useState(false)
-
 
   const MobileComponent: React.FC = (props) => {
     return(
@@ -25,22 +24,16 @@ const Index = () => {
 
   return (
     <NavBar>
-      <Logo>Logo</Logo>
+      <Logo>Remoto Job</Logo>
       <MobileComponent>
         <LinkItem to="">
-          <li>Home</li>
+          <li> Buscar empleos</li>
         </LinkItem>
         <LinkItem to="">
-          <li>About</li>
+          <li>Publicar Oferta</li>
         </LinkItem>
-        <LinkItem to="">
-          <li>Contact</li>
-        </LinkItem>
-        <LinkItem to="">
-          <li>Blog</li>
-        </LinkItem>
-        <SignUpLink to="">
-          <li>Iniciar Sesion</li>
+        <SignUpLink to="/auth/login">
+          <li>Iniciar sesión</li>
         </SignUpLink>
       </MobileComponent>
       <BottomMobile onClick={() => setIsMobile(!isMobile)  } >
@@ -60,10 +53,11 @@ export default Index
 
 const Logo = styled.h4`
   font-size: 25px;
+  margin-left: 30px;
 `
 const NavBar = styled.nav`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   height: 60px;
   color: white;
@@ -74,6 +68,7 @@ const NavLink = styled.ul`
   display: flex;
   justify-content: flex-end;
   list-style: none;
+  margin-right: 30px;
   width: 75%;
   @media screen and (max-width : 780px){
     display: none;
@@ -91,6 +86,7 @@ const NavLinkMobile = styled.ul`
     top: 40px;
     transition: all 0.5s ease-in-out;
     width: 100%;
+    z-index: 9999;
   }
 `
 const LinkItem = styled(Link)`
@@ -118,7 +114,7 @@ const SignUpLink = styled(Link)`
   padding: 10px 10px;
   cursor: pointer;
   border: 1px solid blanchedalmond;
-  border-radius: 5px;
+  border-radius: 15px;
   @media screen and (min-width : 780px){
     :hover{
       background: ${colors.primaryHover};
