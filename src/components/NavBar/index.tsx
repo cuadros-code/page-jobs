@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import { colors } from '../../theme';
 import MenuIcon from '@material-ui/icons/Menu';
 import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
+import { Avatar , Icon} from '@material-ui/core';
 
 const Index = () => {
 
@@ -26,15 +26,30 @@ const Index = () => {
     <NavBar>
       <Logo>Remoto Job</Logo>
       <MobileComponent>
-        <LinkItem to="">
-          <li> Buscar empleos</li>
-        </LinkItem>
-        <LinkItem to="">
-          <li>Publicar Oferta</li>
-        </LinkItem>
-        <SignUpLink to="/auth/login">
-          <li>Iniciar sesión</li>
-        </SignUpLink>
+        <LinkItem to="/"> <li> Buscar empleos</li> </LinkItem>
+        <LinkItem to="/"> <li>Publicar Oferta</li> </LinkItem>
+
+        {
+          false
+          ?
+          <>
+          <LinkUserPerfil to="/profile" > <li>Perfil</li> </LinkUserPerfil>
+          
+          <SignUpLink to="" >
+            <li>Cerrar sesión</li>
+          </SignUpLink>
+
+          <IconUser to="/profile" >
+            <Avatar  src="" />
+          </IconUser>
+          </>
+        :
+          <SignUpLink 
+            to="/login"
+          >
+            <li>Iniciar sesión</li>
+          </SignUpLink>
+        }
       </MobileComponent>
       <BottomMobile onClick={() => setIsMobile(!isMobile)  } >
       {
@@ -48,6 +63,13 @@ const Index = () => {
 }
 
 export default Index
+
+const IconUser = styled(Link)`
+  margin-left: 1rem;
+  @media screen and (max-width : 780px){
+    display: none;
+  }
+`
 
 
 
@@ -138,6 +160,11 @@ const BottomMobile = styled.div`
     cursor: pointer;
     right: 25px;
     top: 15px;
+  } 
+`
+
+const LinkUserPerfil = styled(LinkItem)`
+  @media screen and (min-width : 780px){
+    display: none;
   }
-  
 `

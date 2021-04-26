@@ -35,10 +35,11 @@ const JobItem = ( { job } : Props) => {
 export default JobItem
 
 const Container = styled.div`
+
   width: 100%;
   cursor: pointer;
   border-bottom: 1px solid #e1e1e1;
-  padding: 1.5rem 0 1.5rem 0;
+  padding: 1.5rem 1rem 1.5rem 1rem;
   :hover{
     background-color: #f1f3f8;
     border-bottom: 2px solid ${colors.primary};

@@ -23,7 +23,7 @@ const Index = () => {
                 id="ubicación"
                 placeholder="ubicación de empleo"
               />
-            <GeneralButton title="Buscar" width="120px"/>
+            <GeneralButton title="Buscar" width="120px" margin="3px 0 0 10px"/>
             </ContainerInput>
           </ContainerForm>
         </Form>

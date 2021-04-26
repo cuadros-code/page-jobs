@@ -1,10 +1,25 @@
-import { Route } from "react-router"
+import { FunctionComponent } from "react"
+import { Redirect, Route } from "react-router"
 
-const ProtectedRoute = () => {
+interface Props {
+  isAuth: boolean,
+  exact: boolean,
+  path: string,
+  component: FunctionComponent<any>
+}
+
+const ProtectedRoute = ({ isAuth, component: Component , ...rest }: Props) => {
   return (
-    <Route>
-      
-    </Route>
+    <Route
+    {...rest}
+    component={
+      (props : Props) => (
+        (isAuth)
+        ? <Component {...props} />
+        : <Redirect to="/login" />
+      )
+    }
+    />
   )
 }
 

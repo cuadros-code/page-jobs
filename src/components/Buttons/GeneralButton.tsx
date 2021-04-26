@@ -4,6 +4,7 @@ import { colors } from "../../theme"
 interface Props {
   title: string,
   width?: string,
+  margin?: string,
   type?: 'submit' | 'reset' | 'button',
   onSubmit?: () => {},
   onClick?: () => {}
@@ -11,6 +12,7 @@ interface Props {
 
 interface PropsStyle{
   width: string,
+  margin?: string,
 }
 
 const GeneralButton = ( props : Props ) => {
@@ -30,7 +32,7 @@ const Button = styled.button<PropsStyle>`
   background-color: ${colors.primary};
   color: white;
   border-radius: 10px;
-  margin-left: 15px;
+  margin: ${props => props.margin};
   width: ${props => props.width};
   border: none;
   height: 35px;

@@ -15,7 +15,7 @@ const PublicRouter = ({isAuth, component: Component, ...rest} : Props ) => {
     component={(props: Props) => (
       (!isAuth)
       ? <Component {...props}/>
-      : <Redirect to="/"/>
+      : <Redirect to="/profile" />
     )}
     
     />
