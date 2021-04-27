@@ -6,27 +6,28 @@ import GeneralButton from '../../components/Buttons/GeneralButton'
 import { AuthContext } from '../../context/auth/AuthContext'
 import useForm from '../../hooks/useForm'
 import { colors } from '../../theme'
-import { validateLogin } from '../../validate/validateLogin'
-import {FormLogin} from '../../validate/validateLogin'
+import { FormRegister, validateRegister } from '../../validate/validateRegister'
 
 const Index = () => {
 
-  const [errors, setErrors] = useState<FormLogin | null>()
-  const { login, authState:{error} } = useContext(AuthContext)
+  const [errors, setErrors] = useState<FormRegister | null>()
+  const { register } = useContext(AuthContext)
 
   const {
     onChange, 
-    formValue:{email, password},
-  } = useForm({email: '', password: ''})
+    formValue,
+  } = useForm({name: '', email: '', password: ''})
+
+  const {name, email, password} = formValue
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const err = validateLogin({email, password})
+    const err = validateRegister({name, email, password})
     if (Object.keys(err).length > 0) {
-      return setErrors({...err})
+     return setErrors({...err})
     }
     setErrors(null)
-    login(email, password)
+    register(formValue)
   }
   
 
@@ -37,12 +38,22 @@ const Index = () => {
         <Form 
         onSubmit={handleSubmit}
         >
-        <h2>Iniciar sesión</h2>
-          {
-            !error.ok
-            &&
-            <AlertError>{error.msg}</AlertError>
-          }
+        <h2>Registrarse</h2>
+          <InputContent>
+            <Input
+              error={!!errors?.name}
+              id="outlined-basic" 
+              label="Nombre completo" 
+              variant="outlined"
+              value={name}
+              onChange={(e) => onChange(e.target.value , 'name')}
+              />
+              {
+                errors?.name
+                &&
+                <AlertError>{errors.name}</AlertError>
+              }
+          </InputContent>
           <InputContent>
             <Input
               error={!!errors?.email}
@@ -76,8 +87,8 @@ const Index = () => {
           </InputContent>
 
           <InputContent>
-            <GeneralButton type="submit" width="80%" title="Iniciar Sesión"/>
-            <LinkItem to="/register" >¿No eres miembro? crea una cuenta</LinkItem>
+            <GeneralButton type="submit" width="80%" title="Registrarse"/>
+            <LinkItem to="/login" >¿ya tienes un cuenta? inicia sesión</LinkItem>
           </InputContent>
         </Form>
       </ContainerCard>      
@@ -87,6 +98,12 @@ const Index = () => {
 
 export default Index
 
+const AlertError = styled.p`
+  background-color: #FEB2B2;
+  padding: 10px;
+  color: #b83434;
+  border-radius: 10px;
+`
 const LinkItem = styled(Link)`
   color: ${colors.primary};
   margin-top: 1rem;
@@ -94,19 +111,13 @@ const LinkItem = styled(Link)`
   font-weight: bold;
 `
 
-const AlertError = styled.p`
-  background-color: #FEB2B2;
-  padding: 10px;
-  color: #b83434;
-  border-radius: 10px;
-`
-
 const Container = styled.div`
   display: flex;
-  padding-top: 3rem;
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   height: auto;
 `
 const Form = styled.form`

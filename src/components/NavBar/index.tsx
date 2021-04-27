@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import { colors } from '../../theme';
 import MenuIcon from '@material-ui/icons/Menu';
 import ClearIcon from '@material-ui/icons/Clear';
 import { Avatar , Icon} from '@material-ui/core';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 const Index = () => {
 
   const [isMobile, setIsMobile] = useState(false)
+  const {authState:{isAuthenticated}} = useContext(AuthContext )
+
 
   const MobileComponent: React.FC = (props) => {
     return(
@@ -30,7 +33,7 @@ const Index = () => {
         <LinkItem to="/"> <li>Publicar Oferta</li> </LinkItem>
 
         {
-          false
+          isAuthenticated
           ?
           <>
           <LinkUserPerfil to="/profile" > <li>Perfil</li> </LinkUserPerfil>
