@@ -8,8 +8,11 @@ export interface ErrorMsg {
 export interface UserData {
   name : string,
   email: string,
-  password : string,
+  password?: string | null,
   image? : string,
+  displayName?: string | null,
+  photoUrl?: string | null,
+  uid?: string | null,
 }
 
 export interface AuthState {
@@ -22,8 +25,10 @@ export interface AuthState {
 
 interface AuthContextProps {
   authState: AuthState,
-  login: ( email:string, password: string ) => void,
+  logout: () => void
+  loginWithGoogle: () => void
   register: ( dataUser : UserData ) => void
+  login: ( email:string, password: string ) => void,
 }
 
 export const AuthContext = createContext({} as AuthContextProps )

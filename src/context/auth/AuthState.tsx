@@ -1,7 +1,7 @@
 import { useReducer } from "react"
-import { clientAxios } from "../../config/configAxios"
 import { AuthContext, AuthState, UserData } from './AuthContext'
 import AuthReducer from "./AuthReducer"
+import { auth, GoogleProvider } from "../../config/configFirebase"
 
 export const AuthInitialState : AuthState = {
   isAuthenticated: false,
@@ -18,32 +18,95 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
 
   const login = async (email: string, password: string ) => {
     try {
-      let username = email
-      const res = await clientAxios.post(`/auth/login`, { username  , password })
-      const { data } = res
-      if(!data.ok){
-        return dispatch({
-          type : 'error',
-          payload: data
-        })
+      const userLogin = await auth.signInWithEmailAndPassword(email, password)
+      const { user } = userLogin
+
+      const dataUser: UserData = {
+        uid         : user?.uid,
+        email       : user?.email || '',
+        photoUrl    : user?.photoURL,
+        name        : user?.displayName || '',
+        displayName : user?.displayName,
       }
       dispatch({
         type: 'login',
-        payload: res.data.user
+        payload: dataUser
       })
+     
     } catch (error) {
-      
+      dispatch({
+        type: 'error',
+        payload: {ok: false, msg:'Error al iniciar sesión'}
+      })
     }
   }
   
+  const register = async ({name, email, password}: UserData) => {
+    try {
+    
+      const registerUser = await auth.createUserWithEmailAndPassword(email, password!)
+      await registerUser.user?.updateProfile({displayName: name})
+      const { user } = registerUser
 
-  const register = async (data: UserData) => {
+      const dataUser: UserData = {
+        uid         : user?.uid,
+        email       : user?.email || '',
+        photoUrl    : user?.photoURL,
+        name        : user?.displayName || '',
+        displayName : user?.displayName,
+      }
+      dispatch({
+        type: 'register',
+        payload: dataUser
+      })
+    
+    } catch (error) {
+      dispatch({
+        type: 'error',
+        payload: {ok: false, msg:'Error al registrarse'}
+      })
+    }
+  }
+
+  const loginWithGoogle = async () => {
+    try {
+      
+      const userGoogle = await auth.signInWithPopup(GoogleProvider)
+
+      const { user } = userGoogle
+      const dataUser: UserData = {
+        uid         : user?.uid,
+        email       : user?.email || '',
+        photoUrl    : user?.photoURL,
+        name        : user?.displayName || '',
+        displayName : user?.displayName,
+      }
+      dispatch({
+        type: 'login',
+        payload: dataUser
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: 'error',
+        payload: {ok: false, msg:'Error al iniciar sesión con Google'}
+      })
+    }
+  }
+
+  const logout = async () => {
     try {
 
-      const res = await clientAxios.post(`/auth/register`, data)
-      
+      await auth.signOut()
+      dispatch({
+        type: 'logout'
+      })
+
     } catch (error) {
-      
+      dispatch({
+        type: 'error',
+        payload: {ok: false, msg: 'Error al cerrar sesión'}
+      })
     }
   }
 
@@ -52,7 +115,9 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
       value={{
         authState,
         login,
-        register
+        logout,
+        register,
+        loginWithGoogle,
       }}
     >
       {props.children}

@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import GeneralButton from '../../components/Buttons/GeneralButton'
+import GoogleButton from '../../components/Buttons/GoogleButton'
 import { AuthContext } from '../../context/auth/AuthContext'
 import useForm from '../../hooks/useForm'
 import { colors } from '../../theme'
@@ -11,7 +12,7 @@ import { FormRegister, validateRegister } from '../../validate/validateRegister'
 const Index = () => {
 
   const [errors, setErrors] = useState<FormRegister | null>()
-  const { register } = useContext(AuthContext)
+  const { register, loginWithGoogle } = useContext(AuthContext)
 
   const {
     onChange, 
@@ -79,6 +80,7 @@ const Index = () => {
               value={password}
               onChange={(e) => onChange( e.target.value, 'password')}
             />
+            
           {
             errors?.password
             &&
@@ -88,6 +90,7 @@ const Index = () => {
 
           <InputContent>
             <GeneralButton type="submit" width="80%" title="Registrarse"/>
+            <GoogleButton title="Registrarse con Google" onClick={() => loginWithGoogle()}/>
             <LinkItem to="/login" >¿ya tienes un cuenta? inicia sesión</LinkItem>
           </InputContent>
         </Form>

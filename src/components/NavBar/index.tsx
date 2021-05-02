@@ -10,7 +10,7 @@ import { AuthContext } from '../../context/auth/AuthContext';
 const Index = () => {
 
   const [isMobile, setIsMobile] = useState(false)
-  const {authState:{isAuthenticated}} = useContext(AuthContext )
+  const {authState:{isAuthenticated, user}, logout} = useContext(AuthContext )
 
 
   const MobileComponent: React.FC = (props) => {
@@ -38,12 +38,14 @@ const Index = () => {
           <>
           <LinkUserPerfil to="/profile" > <li>Perfil</li> </LinkUserPerfil>
           
-          <SignUpLink to="" >
+          <SignUpLink to="" onClick={() => logout()}>
             <li>Cerrar sesión</li>
           </SignUpLink>
 
           <IconUser to="/profile" >
-            <Avatar  src="" />
+            <Avatar  
+            src={(user?.photoUrl ? user.photoUrl : '')} 
+            />
           </IconUser>
           </>
         :

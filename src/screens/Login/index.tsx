@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import GeneralButton from '../../components/Buttons/GeneralButton'
+import GoogleButton from '../../components/Buttons/GoogleButton'
 import { AuthContext } from '../../context/auth/AuthContext'
 import useForm from '../../hooks/useForm'
 import { colors } from '../../theme'
@@ -12,7 +13,7 @@ import {FormLogin} from '../../validate/validateLogin'
 const Index = () => {
 
   const [errors, setErrors] = useState<FormLogin | null>()
-  const { login, authState:{error} } = useContext(AuthContext)
+  const { authState:{error}, login, loginWithGoogle } = useContext(AuthContext)
 
   const {
     onChange, 
@@ -76,7 +77,8 @@ const Index = () => {
           </InputContent>
 
           <InputContent>
-            <GeneralButton type="submit" width="80%" title="Iniciar Sesión"/>
+              <GeneralButton type="submit" width="80%" title="Iniciar sesión"/>
+              <GoogleButton title="Iniciar sesión con Google" onClick={() => loginWithGoogle()} />
             <LinkItem to="/register" >¿No eres miembro? crea una cuenta</LinkItem>
           </InputContent>
         </Form>
@@ -100,6 +102,7 @@ const AlertError = styled.p`
   color: #b83434;
   border-radius: 10px;
 `
+
 
 const Container = styled.div`
   display: flex;
