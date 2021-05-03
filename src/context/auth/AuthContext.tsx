@@ -27,6 +27,7 @@ interface AuthContextProps {
   authState: AuthState,
   logout: () => void
   loginWithGoogle: () => void
+  resetPassword: ( email : string ) => void
   register: ( dataUser : UserData ) => void
   login: ( email:string, password: string ) => void,
 }

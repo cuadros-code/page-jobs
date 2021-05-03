@@ -110,6 +110,16 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
     }
   }
 
+  const resetPassword = async (email: string) => {
+    try {
+     const a = await auth.sendPasswordResetEmail(email)
+     console.log(a);
+    } catch (error) {
+      
+    }
+  }
+  
+
   return (
     <AuthContext.Provider
       value={{
@@ -117,6 +127,7 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
         login,
         logout,
         register,
+        resetPassword,
         loginWithGoogle,
       }}
     >

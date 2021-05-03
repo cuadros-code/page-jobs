@@ -53,6 +53,7 @@ const Index = () => {
               value={email}
               onChange={(e) => onChange(e.target.value , 'email')}
               />
+            <LinkResetPass to="/reset" >¿Se te olvidó tu contraseña?</LinkResetPass>
               {
                 errors?.email
                 &&
@@ -91,9 +92,16 @@ export default Index
 
 const LinkItem = styled(Link)`
   color: ${colors.primary};
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: bold;
+`
+const LinkResetPass = styled(LinkItem)`
+  align-self: flex-end;
+  margin-right: 3.5rem;
+  margin-top: 7px;
+  margin-bottom: 0.7rem;
+  font-size: 0.8rem;
 `
 
 const AlertError = styled.p`

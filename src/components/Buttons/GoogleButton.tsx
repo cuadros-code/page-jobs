@@ -35,7 +35,7 @@ const ImgGoogle = styled.img`
 const ButtonGoogle = styled.button`
   width: 80%;
   position: relative;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   height: 35px;
   border-radius: 10px;
   background-color: ${colors.primaryHover};
