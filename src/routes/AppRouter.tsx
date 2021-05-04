@@ -6,9 +6,16 @@ import {
   } from 'react-router-dom'
 import  Nav  from '../components/NavBar'
 import { AuthContext } from '../context/auth/AuthContext'
-import { Home, Profile, Login, Register, ResetPassword } from '../screens'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRouter from './PublicRouter'
+import { 
+  Home,
+  Login,
+  Profile,
+  Register,
+  ResetPassword,
+  UpdatePassword,
+ } from '../screens'
 
 const AppRouter = () => {
 
@@ -21,10 +28,14 @@ const AppRouter = () => {
         <Nav />
         <Switch>
           <Route exact path="/" component={Home} />
-          <PublicRouter exact isAuth={isAuthenticated} path="/login" component={Login} />
-          <PublicRouter exact isAuth={isAuthenticated} path="/reset" component={ResetPassword} />
-          <PublicRouter exact isAuth={isAuthenticated} path="/register" component={Register} />
+
           <ProtectedRoute exact isAuth={isAuthenticated}path="/profile/"component={Profile} />
+
+          <PublicRouter exact isAuth={isAuthenticated} path="/login" component={Login} />
+          <PublicRouter exact isAuth={isAuthenticated} path="/register" component={Register} />
+          <PublicRouter exact isAuth={isAuthenticated} path="/reset" component={ResetPassword} />
+          <PublicRouter exact isAuth={isAuthenticated} path="/update-password" component={UpdatePassword} />
+        
         </Switch>
       </Router>
     </>

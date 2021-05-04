@@ -11,9 +11,14 @@ const useForm = <I extends Object>( initialState : I ) => {
     })
   }
 
+  const reset = () => {
+    setFormValue(initialState)
+  }
+
   return{
     formValue,
     onChange,
+    reset
   }
 
 }

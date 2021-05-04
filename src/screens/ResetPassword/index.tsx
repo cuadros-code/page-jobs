@@ -8,13 +8,13 @@ import { AuthContext } from '../../context/auth/AuthContext'
 const ResetPassword = () => {
 
   const { resetPassword } = useContext(AuthContext)
-  const { formValue:{email}, onChange } = useForm({
-    email: ''
-  })
+  const { 
+    formValue:{email}, onChange, reset } = useForm({ email: '' })
 
   const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     resetPassword(email)
+    reset()
   }
   
 
