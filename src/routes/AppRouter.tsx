@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { 
   BrowserRouter as Router,
   Switch,
@@ -19,8 +19,12 @@ import {
 
 const AppRouter = () => {
 
-  const {authState:{isAuthenticated}} = useContext(AuthContext )
+  const {authState:{isAuthenticated}, getUserAuth} = useContext(AuthContext )
 
+  useEffect(() => {
+    getUserAuth()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>

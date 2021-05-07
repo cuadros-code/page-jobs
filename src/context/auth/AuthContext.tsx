@@ -1,35 +1,36 @@
 import { createContext } from "react";
 
 export interface ErrorMsg {
-  ok?: boolean,
-  msg?: string | null
+  ok?  : boolean,
+  msg? : string | null
 }
 
 export interface UserData {
-  name : string,
-  email: string,
-  password?: string | null,
-  image? : string,
+  name        : string,
+  email       : string,
+  image?      : string,
+  uid?        : string | null,
+  password?   : string | null,
+  photoUrl?   : string | null,
   displayName?: string | null,
-  photoUrl?: string | null,
-  uid?: string | null,
 }
 
 export interface AuthState {
-  isLoading: boolean,
-  isAuthenticated: boolean,
-  token: string,
-  user: UserData | null,
-  error: ErrorMsg ,
+  token           : string,
+  error           : ErrorMsg ,
+  isLoading       : boolean,
+  user            : UserData | null,
+  isAuthenticated : boolean,
 }
 
 interface AuthContextProps {
   authState: AuthState,
-  logout: () => void
-  loginWithGoogle: () => void
-  resetPassword: ( email : string ) => void
-  register: ( dataUser : UserData ) => void
-  login: ( email:string, password: string ) => void,
+  logout          : () => void
+  getUserAuth     : () => void
+  loginWithGoogle : () => void
+  resetPassword   : ( email : string ) => void
+  register        : ( dataUser : UserData ) => void
+  login           : ( email:string, password: string ) => void
 }
 
 export const AuthContext = createContext({} as AuthContextProps )

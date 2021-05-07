@@ -43,9 +43,7 @@ const Index = () => {
           </SignUpLink>
 
           <IconUser to="/profile" >
-            <Avatar  
-            src={(user?.photoUrl ? user.photoUrl : '')} 
-            />
+              <Avatar src={(user?.photoUrl ? user.photoUrl : '')} />
           </IconUser>
           </>
         :

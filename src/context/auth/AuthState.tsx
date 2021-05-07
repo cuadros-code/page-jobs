@@ -2,6 +2,7 @@ import { useReducer } from "react"
 import { AuthContext, AuthState, UserData } from './AuthContext'
 import AuthReducer from "./AuthReducer"
 import { auth, GoogleProvider } from "../../config/configFirebase"
+import { serializeUser } from "../../helpers/serializeUser"
 
 export const AuthInitialState : AuthState = {
   isAuthenticated: false,
@@ -10,29 +11,45 @@ export const AuthInitialState : AuthState = {
   user: null,
   error: {ok: true},
 }
-
 const AuthStateProvider = (props:{ children: JSX.Element}) => {
 
 
   const [authState, dispatch] = useReducer( AuthReducer , AuthInitialState)
+
+  const getUserAuth = () => {
+    try {
+      
+      auth.onAuthStateChanged(( user ) => {
+        if ( user ){
+          const dataUser = serializeUser(user)
+
+          dispatch({
+            type: 'login',
+            payload: dataUser
+          })
+        }
+      })
+    } catch (error) {
+      dispatch({
+        type: 'error',
+        payload: {ok: false, msg:'Error al iniciar sesión'}
+      })
+    }
+  }
+  
 
   const login = async (email: string, password: string ) => {
     try {
       const userLogin = await auth.signInWithEmailAndPassword(email, password)
       const { user } = userLogin
 
-      const dataUser: UserData = {
-        uid         : user?.uid,
-        email       : user?.email || '',
-        photoUrl    : user?.photoURL,
-        name        : user?.displayName || '',
-        displayName : user?.displayName,
+      if(user){
+        const dataUser = serializeUser(user)
+        dispatch({
+          type: 'login',
+          payload: dataUser
+        })
       }
-      dispatch({
-        type: 'login',
-        payload: dataUser
-      })
-     
     } catch (error) {
       dispatch({
         type: 'error',
@@ -127,6 +144,7 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
         login,
         logout,
         register,
+        getUserAuth,
         resetPassword,
         loginWithGoogle,
       }}
