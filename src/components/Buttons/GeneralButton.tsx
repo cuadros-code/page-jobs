@@ -6,8 +6,8 @@ interface Props {
   width?: string,
   margin?: string,
   type?: 'submit' | 'reset' | 'button',
-  onSubmit?: () => {},
-  onClick?: () => {}
+  onSubmit?: () => void,
+  onClick?: () => void
 }
 
 interface PropsStyle{

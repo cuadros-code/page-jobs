@@ -5,6 +5,7 @@ type AuthAction =
   | { type: 'login', payload: UserData }
   | { type: 'register', payload: UserData }
   | { type: 'logout'}
+  | { type: 'noAuth'}
 
 const AuthReducer = (state: AuthState, action: AuthAction): AuthState => {
   
@@ -15,10 +16,15 @@ const AuthReducer = (state: AuthState, action: AuthAction): AuthState => {
         ...state,
         error: action.payload
       }
+    case 'noAuth':
+      return{
+        ...state,
+        isLoading: false
+      }
     case 'login':
       return{
         ...state,
-        isLoading: true,
+        isLoading: false,
         isAuthenticated: true,
         user: action.payload,
         error: {ok: true}

@@ -8,9 +8,11 @@ import  Nav  from '../components/NavBar'
 import { AuthContext } from '../context/auth/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRouter from './PublicRouter'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { 
   Home,
   Login,
+  PostJob,
   Profile,
   Register,
   ResetPassword,
@@ -19,12 +21,20 @@ import {
 
 const AppRouter = () => {
 
-  const {authState:{isAuthenticated}, getUserAuth} = useContext(AuthContext )
+  const {authState:{isAuthenticated, isLoading}, getUserAuth} = useContext(AuthContext )
 
   useEffect(() => {
     getUserAuth()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isLoading) {
+    return (
+      <>
+        <CircularProgress color="primary" />
+      </>
+    )
+  }
 
   return (
     <>
@@ -34,6 +44,7 @@ const AppRouter = () => {
           <Route exact path="/" component={Home} />
 
           <ProtectedRoute exact isAuth={isAuthenticated}path="/profile/"component={Profile} />
+          <ProtectedRoute exact isAuth={isAuthenticated}path="/profile/post-job"component={PostJob} />
 
           <PublicRouter exact isAuth={isAuthenticated} path="/login" component={Login} />
           <PublicRouter exact isAuth={isAuthenticated} path="/register" component={Register} />

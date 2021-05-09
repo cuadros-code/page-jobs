@@ -1,11 +1,14 @@
 import AuthStateProvider from "./context/auth/AuthState"
+import PostStateProvider from "./context/post/PostState"
 import AppRouter from "./routes/AppRouter"
 
 const App = () => {
   return (
     <>
     <AuthStateProvider>
-     <AppRouter /> 
+      <PostStateProvider>
+        <AppRouter /> 
+      </PostStateProvider> 
     </AuthStateProvider>
     </>
   )

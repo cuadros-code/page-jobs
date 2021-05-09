@@ -12,7 +12,6 @@ const Index = () => {
   const [isMobile, setIsMobile] = useState(false)
   const {authState:{isAuthenticated, user}, logout} = useContext(AuthContext )
 
-
   const MobileComponent: React.FC = (props) => {
     return(
       <>
@@ -30,7 +29,7 @@ const Index = () => {
       <Logo>Remoto Job</Logo>
       <MobileComponent>
         <LinkItem to="/"> <li> Buscar empleos</li> </LinkItem>
-        <LinkItem to="/"> <li>Publicar Oferta</li> </LinkItem>
+        <LinkItem to="/profile/post-job"> <li>Publicar Oferta</li> </LinkItem>
 
         {
           isAuthenticated
@@ -43,7 +42,7 @@ const Index = () => {
           </SignUpLink>
 
           <IconUser to="/profile" >
-              <Avatar src={(user?.photoUrl ? user.photoUrl : '')} />
+              <Avatar src={(user?.photoUrl) ? user.photoUrl : ''} />
           </IconUser>
           </>
         :

@@ -3,22 +3,21 @@ import { AuthContext, AuthState, UserData } from './AuthContext'
 import AuthReducer from "./AuthReducer"
 import { auth, GoogleProvider } from "../../config/configFirebase"
 import { serializeUser } from "../../helpers/serializeUser"
+import Swal from 'sweetalert2'
 
 export const AuthInitialState : AuthState = {
   isAuthenticated: false,
-  isLoading: false,
-  token: '',
-  user: null,
-  error: {ok: true},
+  isLoading      : true,
+  token          : '',
+  user           : null,
+  error          : {ok: true},
 }
 const AuthStateProvider = (props:{ children: JSX.Element}) => {
-
 
   const [authState, dispatch] = useReducer( AuthReducer , AuthInitialState)
 
   const getUserAuth = () => {
     try {
-      
       auth.onAuthStateChanged(( user ) => {
         if ( user ){
           const dataUser = serializeUser(user)
@@ -26,6 +25,10 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
           dispatch({
             type: 'login',
             payload: dataUser
+          })
+        }else{
+          dispatch({
+            type: 'noAuth'
           })
         }
       })
@@ -37,7 +40,6 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
     }
   }
   
-
   const login = async (email: string, password: string ) => {
     try {
       const userLogin = await auth.signInWithEmailAndPassword(email, password)
@@ -64,23 +66,20 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
       const registerUser = await auth.createUserWithEmailAndPassword(email, password!)
       await registerUser.user?.updateProfile({displayName: name})
       const { user } = registerUser
-
-      const dataUser: UserData = {
-        uid         : user?.uid,
-        email       : user?.email || '',
-        photoUrl    : user?.photoURL,
-        name        : user?.displayName || '',
-        displayName : user?.displayName,
+      
+      if(user){
+        const dataUser = serializeUser(user)      
+        dispatch({
+          type: 'register',
+          payload: dataUser
+        })
       }
-      dispatch({
-        type: 'register',
-        payload: dataUser
-      })
-    
+  
     } catch (error) {
-      dispatch({
-        type: 'error',
-        payload: {ok: false, msg:'Error al registrarse'}
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'El correo ya pertenece a una cuenta',
       })
     }
   }
@@ -91,17 +90,14 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
       const userGoogle = await auth.signInWithPopup(GoogleProvider)
 
       const { user } = userGoogle
-      const dataUser: UserData = {
-        uid         : user?.uid,
-        email       : user?.email || '',
-        photoUrl    : user?.photoURL,
-        name        : user?.displayName || '',
-        displayName : user?.displayName,
+
+      if(user){
+        const dataUser =  serializeUser(user)
+        dispatch({
+          type: 'login',
+          payload: dataUser
+        })
       }
-      dispatch({
-        type: 'login',
-        payload: dataUser
-      })
   
     } catch (error) {
       dispatch({
@@ -129,10 +125,18 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
 
   const resetPassword = async (email: string) => {
     try {
-     const a = await auth.sendPasswordResetEmail(email)
-     console.log(a);
+     await auth.sendPasswordResetEmail(email)
+     Swal.fire(
+      'Correo Enviado',
+      'Ingresa al link en tu correo y restablece tu contraseña',
+      'success'
+    )
     } catch (error) {
-      
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'El correo no se encuentra registrado',
+      })
     }
   }
   

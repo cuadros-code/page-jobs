@@ -27,6 +27,5 @@ export const validateRegister = (campos: FormRegister) => {
     error.name = 'El nombre es requerido'
   }
 
-
   return error
 }

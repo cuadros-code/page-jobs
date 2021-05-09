@@ -4,17 +4,25 @@ import GeneralButton from '../../components/Buttons/GeneralButton'
 import useForm from '../../hooks/useForm'
 import { useContext } from 'react'
 import { AuthContext } from '../../context/auth/AuthContext'
+import { useHistory } from 'react-router'
 
 const ResetPassword = () => {
-
+  const history = useHistory()
   const { resetPassword } = useContext(AuthContext)
+  
   const { 
-    formValue:{email}, onChange, reset } = useForm({ email: '' })
+    formValue:{email},
+    onChange, 
+    reset } = useForm({ email: '' })
 
   const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if(email.length <= 0){
+      return
+    }
     resetPassword(email)
     reset()
+    history.push('/login')
   }
   
 
@@ -51,6 +59,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding-top: 2rem;
   height: 50vh;
 `
 const Form = styled.form`

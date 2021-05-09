@@ -63,7 +63,7 @@ const Description = styled(Typography)`
    text-overflow: ellipsis;
    display: -webkit-box;
    line-height: 16px; /* fallback */
-   max-height: 32px; /* fallback */
+   max-height: 35px; /* fallback */
    -webkit-line-clamp: 6; /* number of lines to show */
    -webkit-box-orient: vertical;
 

@@ -111,14 +111,14 @@ const AlertError = styled.p`
   border-radius: 10px;
 `
 
-
 const Container = styled.div`
   display: flex;
-  padding-top: 3rem;
+  padding-top: 2rem;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: auto;
+  padding-bottom: 30px;
 `
 const Form = styled.form`
   height: 100%;

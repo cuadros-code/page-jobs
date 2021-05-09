@@ -119,7 +119,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-top: 3rem;
+  padding-top: 1.5rem;
   padding-bottom: 3rem;
   height: auto;
 `
