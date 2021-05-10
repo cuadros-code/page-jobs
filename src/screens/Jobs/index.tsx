@@ -1,23 +1,29 @@
+import { useContext, useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 import {FormControl,
         Select,
         TextField,
         InputLabel,
-        MenuItem,
-        TextareaAutosize } from '@material-ui/core'
-import { useContext, useState } from 'react'
+        MenuItem, } from '@material-ui/core'
 import styled from 'styled-components'
-import GeneralButton from '../../components/Buttons/GeneralButton'
-import { AuthContext } from '../../context/auth/AuthContext'
-import { PostContext } from '../../context/post/PostContext'
 import useForm from '../../hooks/useForm'
+import { PostContext } from '../../context/post/PostContext'
+import { AuthContext } from '../../context/auth/AuthContext'
+import pathsNavigation from '../../constant/pathsNavigation'
+import GeneralButton from '../../components/Buttons/GeneralButton'
 import { FormAddRegister, validateAddJob } from '../../validate/validateAddJob'
 
-const PostJob = () => {
+const PostJob = ( { history } : RouteComponentProps ) => {
 
+  const [description, setDescription] = useState('');
   const [error, setError] = useState<FormAddRegister | null>()
   const { addJob } = useContext(PostContext)
   const { authState: {user} } = useContext(AuthContext)
-
+  
   const { formValue, onChange } = useForm({
     companyName   : '',
     jobTitle      : '',
@@ -25,12 +31,10 @@ const PostJob = () => {
     vacancyNumbers: '',
     salary        : '',
     remotoJob     : '',
-    description   : '',
     link          : ''
   })
 
   const { companyName,
-          description, 
           jobTitle, 
           location, 
           remotoJob, 
@@ -39,17 +43,20 @@ const PostJob = () => {
           link  } = formValue
 
   const handleSubmit = ( e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-   const err = validateAddJob(formValue)
-   if (Object.keys(err).length > 0) {
-    return setError({...err})
-  }
-  setError(null)
-  if(user?.uid) addJob(formValue, user?.uid)
+      e.preventDefault()
+    const errors = validateAddJob({...formValue, description})
+    if (Object.keys(errors).length > 0) return setError({...errors})
 
+    if(user?.uid) addJob({...formValue, description}, user?.uid)
+    
+    setTimeout(() => {
+      history.push(pathsNavigation.PROFILE)
+    }, 1000);
+    setError(null)
   }
+
   
-
+  
   return (
     <Container>
       <Form
@@ -58,6 +65,7 @@ const PostJob = () => {
       >
       
       <h2>Publicar empleo</h2>
+      
         <Input 
           error={!!error?.companyName}
           name='companyName' 
@@ -146,11 +154,16 @@ const PostJob = () => {
           error?.remotoJob && <AlertError>{error.remotoJob}</AlertError>
         }
 
+        <InputLabel 
+          style={{marginTop: '2rem'}} 
+          required id="demo-simple-select-label"
+          >Descripción del empleo
+        </InputLabel>
         <TextArea 
-          placeholder="Descripción del empleo"
+          theme="snow" 
           value={description}
-          onChange={(e) => onChange(e.target.value, 'description')}
-          rowsMin={6}
+          onChange={setDescription}
+          placeholder="Descripción del empleo"
         />
         {
           error?.description && <AlertError>{error.description}</AlertError>
@@ -171,9 +184,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: 10px 0 50px 0;
-  @media(max-width: 600px){
-    /* padding: 0; */
-  }
 `
 
 const AlertError = styled.p`
@@ -194,8 +204,7 @@ const Form = styled.form`
 const Input = styled(TextField)`
   margin-bottom: 15px;
 `
-const TextArea = styled(TextareaAutosize)`
-  margin-top: 2rem;
+const TextArea = styled(ReactQuill)`
+  margin-top: 5px;
   margin-bottom: 20px;
-  resize: none;
 `

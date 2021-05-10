@@ -14,6 +14,34 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
 
   const [postState, dispatch] = useReducer( PostReducer , PostInitialState)
 
+  const getLastPost = async () => {
+    try {
+      const jobsRef = await firestore
+            .collection(references.refJob)
+            .orderBy('timePost', 'desc')
+            .limit(3)
+            .get()
+
+      let jobs : PostData[] = [] 
+      
+      jobsRef.docs.forEach( doc => {
+        jobs.push({
+          id: doc.id,
+          ...doc.data()
+        })
+      })
+      
+      dispatch({
+        type:'lastPost',
+        payload : jobs
+      })
+
+    } catch (error) {
+      
+    }
+  }
+  
+
   const addJob = async (jobData: PostData, userId: string) => {
     try {
       const timePost =  Date.now()
@@ -25,6 +53,9 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
           icon : 'success',
           title: 'El empleo fue publicado',
         })
+
+      getPostByUser(userId)
+      
     } catch (error) {
       Swal.fire({
         icon : 'error',
@@ -36,9 +67,11 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
 
   const getPostByUser = async ( userId: string ) => {
       try {
-        const jobsRef = await firestore.collection(references.refJob)
-                                 .where('userId', '==', userId)
-                                 .get()
+        const jobsRef = await firestore
+                              .collection(references.refJob)
+                              .where('userId', '==', userId)
+                              .get()
+
         let jobs : PostData[] = [] 
         jobsRef.docs.forEach( doc => {
           jobs.push({
@@ -61,13 +94,49 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
       }
   }
   
+  const deletePost = ( postId : string, userId: string ) => {
+    try {
+      
+      Swal.fire({
+        title: 'Desea eliminar la publicación ?',
+        showDenyButton: true,
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: `Eliminar`,
+        denyButtonText: `Cancelar`,
+      }).then( async (result) => {
+        if (result.isConfirmed) {
+          
+          Swal.fire('Eliminado', '', 'success')
+          await firestore
+            .collection(references.refJob)
+            .doc(postId)
+            .delete()
+
+          getPostByUser(userId)
+        } else if (result.isDenied) {
+          Swal.fire('Acción cancelada', '', 'info')
+        }
+      })      
+
+    } catch (error) {
+      Swal.fire({
+        icon : 'error',
+        title: 'Oops...',
+        text : 'No se pudo eliminar la publicación',
+      })
+    }
+  }
+  
 
   return (
     <PostContext.Provider
       value={{
         postState,
         addJob,
-        getPostByUser
+        deletePost,
+        getLastPost,
+        getPostByUser,
       }}
     >
       {props.children}

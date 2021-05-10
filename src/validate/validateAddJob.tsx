@@ -34,6 +34,10 @@ export const validateAddJob = ( formData : FormAddRegister ) => {
   }
   if(!formData.description){
     error.description = 'Ingrese la descripción'
+  }else{
+    if(formData.description.length <= 50){
+      error.description = 'La descripción es muy corta'
+    } 
   }
 
   if(formData.link){

@@ -2,30 +2,34 @@ import { Typography } from '@material-ui/core'
 import styled from 'styled-components'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { colors } from '../../theme';
-
-interface DataJob {
-  id: number,
-  title: string,
-  description: string,
-  company: string,
-  site: string,
-}
+import { PostData } from '../../context/post/PostContext';
 
 interface Props {
-  job: DataJob
+  job: PostData
 }
 
 const JobItem = ( { job } : Props) => {
+
+
+
   return (
     <>
       <Container>
-        <Label variant="h6" color="primary">{job.title}</Label>
-        <Label variant="subtitle1" color="primary">{job.company}</Label>
+        <Label variant="h6" color="primary">{job.jobTitle}</Label>
+        <Label variant="subtitle1" color="primary">{job.companyName}</Label>
         <Location>
           <LocationIcon style={{ fontSize: 20 }} />
-          <Label variant="subtitle2" color="primary"> {job.site}</Label>
+          <Label variant="subtitle2" color="primary"> {job.location}</Label>
         </Location>
-        <Description variant="subtitle2"  > {job.description}...</Description>
+        {job.description 
+        &&
+          <Description 
+          variant="subtitle2" 
+          dangerouslySetInnerHTML={
+            {__html: job.description?.toString().slice(0, 200).concat('...')}} 
+          > 
+          </Description>
+        }
 
       </Container>
     </>
@@ -58,13 +62,6 @@ const Label = styled(Typography)`
 `
 const Description = styled(Typography)`
  padding-bottom: 10px ;
-   word-break: break-word;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   line-height: 16px; /* fallback */
-   max-height: 35px; /* fallback */
-   -webkit-line-clamp: 6; /* number of lines to show */
-   -webkit-box-orient: vertical;
+   
 
 `

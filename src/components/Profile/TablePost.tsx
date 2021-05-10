@@ -1,5 +1,7 @@
 import { Table, TableBody, TableCell,TableContainer,TableHead , TableRow,Paper  } from '@material-ui/core'
-import { PostData } from '../../context/post/PostContext'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/auth/AuthContext'
+import { PostContext, PostData } from '../../context/post/PostContext'
 import formatDate from '../../helpers/formatDate'
 import { colors } from '../../theme'
 import GeneralButton from '../Buttons/GeneralButton'
@@ -9,6 +11,15 @@ interface Props {
 }
 
 const TablePost = ( { postByUser }: Props ) => {
+
+  const { deletePost } = useContext(PostContext)
+  const { authState:{user} } = useContext(AuthContext)
+
+  const handleDeletePost = ( postId : string ) => {
+    if(user?.uid) deletePost( postId, user?.uid )
+  }
+  
+
   return (
     <>
        <TableContainer style={{maxWidth: '850px'}} component={Paper}>
@@ -28,7 +39,12 @@ const TablePost = ( { postByUser }: Props ) => {
                     </TableCell>
                     <TableCell align="center">{row.timePost && formatDate(row.timePost)}</TableCell>
                     <TableCell align="center">
-                      <GeneralButton title="Eliminar" margin="5px 10px" width="100px"/>
+                      <GeneralButton 
+                        title="Eliminar" 
+                        margin="5px 10px" 
+                        width="100px"
+                        onClick={ () => { row.id && handleDeletePost(row.id) }}
+                      />
                       <GeneralButton title="Editar" width="100px" />
                     </TableCell>
                   </TableRow>

@@ -27,8 +27,10 @@ export interface PostState {
 
 interface PostContextProps {
   postState     : PostState,
+  getLastPost   : () => void
   getPostByUser : (userId: string) => void
   addJob        : (jobData: PostData, userId: string) => void,
+  deletePost    : (postId : string, userId: string) => void
 }
 
 export const PostContext = createContext({} as PostContextProps )
