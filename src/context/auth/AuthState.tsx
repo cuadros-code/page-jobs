@@ -109,12 +109,10 @@ const AuthStateProvider = (props:{ children: JSX.Element}) => {
 
   const logout = async () => {
     try {
-
       await auth.signOut()
       dispatch({
         type: 'logout'
       })
-
     } catch (error) {
       dispatch({
         type: 'error',

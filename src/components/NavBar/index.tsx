@@ -2,9 +2,10 @@ import { useContext, useState } from 'react';
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import { colors } from '../../theme';
+import { Avatar} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ClearIcon from '@material-ui/icons/Clear';
-import { Avatar , Icon} from '@material-ui/core';
+import navigation from '../../constant/pathsNavigation'
 import { AuthContext } from '../../context/auth/AuthContext';
 
 const Index = () => {
@@ -28,26 +29,28 @@ const Index = () => {
     <NavBar>
       <Logo>Remoto Job</Logo>
       <MobileComponent>
-        <LinkItem to="/"> <li> Buscar empleos</li> </LinkItem>
-        <LinkItem to="/profile/post-job"> <li>Publicar Oferta</li> </LinkItem>
+        <LinkItem to={navigation.HOME}> <li> Buscar empleos</li> </LinkItem>
+        <LinkItem to={navigation.POST_JOB}> <li>Publicar Oferta</li> </LinkItem>
 
         {
           isAuthenticated
           ?
           <>
-          <LinkUserPerfil to="/profile" > <li>Perfil</li> </LinkUserPerfil>
-          
-          <SignUpLink to="" onClick={() => logout()}>
-            <li>Cerrar sesión</li>
-          </SignUpLink>
+            <LinkUserPerfil to={navigation.PROFILE} > 
+              <li>Perfil</li> 
+            </LinkUserPerfil>
+            
+            <SignUpLink to={navigation.HOME} onClick={logout}>
+              <li>Cerrar sesión</li>
+            </SignUpLink>
 
-          <IconUser to="/profile" >
-              <Avatar src={(user?.photoUrl) ? user.photoUrl : ''} />
-          </IconUser>
+            <IconUser to={navigation.PROFILE} >
+                <Avatar src={(user?.photoUrl) ? user.photoUrl : ''} />
+            </IconUser>
           </>
         :
           <SignUpLink 
-            to="/login"
+            to={navigation.LOGIN}
           >
             <li>Iniciar sesión</li>
           </SignUpLink>

@@ -4,6 +4,7 @@ import { colors } from "../../theme"
 interface Props {
   title: string,
   width?: string,
+  backgroundColor?: string,
   margin?: string,
   type?: 'submit' | 'reset' | 'button',
   onSubmit?: () => void,
@@ -13,12 +14,14 @@ interface Props {
 interface PropsStyle{
   width: string,
   margin?: string,
+  backgroundColor?: string,
 }
 
 const GeneralButton = ( props : Props ) => {
   return (
     <Button
       width={`${props.width}`}
+      backgroundColor={`${props.backgroundColor}`}
     {...props}
     >
         {props.title}

@@ -37,7 +37,7 @@ export const validateAddJob = ( formData : FormAddRegister ) => {
   }
 
   if(formData.link){
-    let validate = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    let validate = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
     if(!validate.test(formData.link)){
       error.link = 'El correo es invalido'
     }

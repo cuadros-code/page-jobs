@@ -1,7 +1,8 @@
 import { PostData, PostState } from "./PostContext"
 
 type PostAction = 
-  | { type: 'addJob', payload: PostData } 
+  | { type: 'addJob', payload: PostData }
+  | { type: 'jobsByUser', payload: PostData[] }
 
 const PostReducer = (state: PostState, action: PostAction) : PostState => {
 
@@ -9,6 +10,11 @@ const PostReducer = (state: PostState, action: PostAction) : PostState => {
     case 'addJob':
       return{
         ...state
+      }
+    case 'jobsByUser':
+      return{
+        ...state,
+        postByUser: action.payload
       }
   
     default:

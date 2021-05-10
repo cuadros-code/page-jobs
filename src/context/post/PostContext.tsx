@@ -6,10 +6,12 @@ export interface ErrorMsg {
 }
 
 export interface PostData {
+  id?            : string;
   link?          : string,
   salary?        : string,
   jobTitle?      : string,
   location?      : string,
+  timePost?      : string,
   remotoJob?     : string,
   description?   : string
   companyName?   : string,
@@ -20,12 +22,13 @@ export interface PostData {
 export interface PostState {
   lastPost  : PostData[] | null,
   activePost: PostData | null,
-  postByUser: PostData[] | PostData | null
+  postByUser: PostData[] | null
 }
 
 interface PostContextProps {
-  postState : PostState,
-  addJob    : (jobData: PostData, userId: string) => void
+  postState     : PostState,
+  getPostByUser : (userId: string) => void
+  addJob        : (jobData: PostData, userId: string) => void,
 }
 
 export const PostContext = createContext({} as PostContextProps )

@@ -1,14 +1,14 @@
 import { useContext, useEffect } from 'react'
-import { 
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  } from 'react-router-dom'
 import  Nav  from '../components/NavBar'
 import { AuthContext } from '../context/auth/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRouter from './PublicRouter'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { 
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  } from 'react-router-dom'
 import { 
   Home,
   Login,
@@ -18,9 +18,10 @@ import {
   ResetPassword,
   UpdatePassword,
  } from '../screens'
+import navigation from '../constant/pathsNavigation'
 
 const AppRouter = () => {
-
+  
   const {authState:{isAuthenticated, isLoading}, getUserAuth} = useContext(AuthContext )
 
   useEffect(() => {
@@ -41,15 +42,45 @@ const AppRouter = () => {
       <Router>
         <Nav />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path={navigation.HOME} component={Home} />
 
-          <ProtectedRoute exact isAuth={isAuthenticated}path="/profile/"component={Profile} />
-          <ProtectedRoute exact isAuth={isAuthenticated}path="/profile/post-job"component={PostJob} />
+          <ProtectedRoute 
+            exact 
+            isAuth={isAuthenticated} 
+            path={navigation.PROFILE} 
+            component={Profile} 
+          />
+          <ProtectedRoute 
+            exact 
+            isAuth={isAuthenticated} 
+            path={navigation.POST_JOB} 
+            component={PostJob} 
+          />
 
-          <PublicRouter exact isAuth={isAuthenticated} path="/login" component={Login} />
-          <PublicRouter exact isAuth={isAuthenticated} path="/register" component={Register} />
-          <PublicRouter exact isAuth={isAuthenticated} path="/reset" component={ResetPassword} />
-          <PublicRouter exact isAuth={isAuthenticated} path="/update-password" component={UpdatePassword} />
+          <PublicRouter 
+            exact 
+            isAuth={isAuthenticated} 
+            path={navigation.LOGIN} 
+            component={Login} 
+          />
+          <PublicRouter 
+            exact 
+            isAuth={isAuthenticated} 
+            path={navigation.REGISTER} 
+            component={Register} 
+          />
+          <PublicRouter 
+            exact 
+            isAuth={isAuthenticated} 
+            path={navigation.RESET_PASSWORD} 
+            component={ResetPassword} 
+          />
+          <PublicRouter 
+            exact 
+            isAuth={isAuthenticated} 
+            path="/update-password" 
+            component={UpdatePassword} 
+          />
         
         </Switch>
       </Router>

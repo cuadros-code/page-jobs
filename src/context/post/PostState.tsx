@@ -2,6 +2,8 @@ import { useReducer } from "react"
 import { firestore } from "../../config/configFirebase"
 import { PostState, PostContext, PostData } from "./PostContext"
 import PostReducer from "./PostReducer"
+import references from '../../constant/pathsFirestore'
+import Swal from 'sweetalert2'
 
 export const PostInitialState : PostState = {
   activePost  : null,
@@ -14,15 +16,49 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
 
   const addJob = async (jobData: PostData, userId: string) => {
     try {
-      const res = await firestore
-                        .collection('jobs')
-                        .doc(userId)
-                        .set(jobData)
-
-      console.log(res);
+      const timePost =  Date.now()
+      await firestore
+            .collection(references.refJob)
+            .add({...jobData, userId, timePost})
+                        
+      Swal.fire({
+          icon : 'success',
+          title: 'El empleo fue publicado',
+        })
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        icon : 'error',
+        title: 'Oops...',
+        text : 'Error al publicar empleo',
+      })
     }
+  }
+
+  const getPostByUser = async ( userId: string ) => {
+      try {
+        const jobsRef = await firestore.collection(references.refJob)
+                                 .where('userId', '==', userId)
+                                 .get()
+        let jobs : PostData[] = [] 
+        jobsRef.docs.forEach( doc => {
+          jobs.push({
+            id: doc.id,
+            ...doc.data()
+          })
+        })
+
+        dispatch({
+          type    : 'jobsByUser',
+          payload : jobs
+        })
+
+      } catch (error) {
+        Swal.fire({
+          icon : 'error',
+          title: 'Oops...',
+          text : 'Error al obtener tus publicaciones',
+        })
+      }
   }
   
 
@@ -30,7 +66,8 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
     <PostContext.Provider
       value={{
         postState,
-        addJob
+        addJob,
+        getPostByUser
       }}
     >
       {props.children}
