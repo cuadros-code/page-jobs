@@ -15,6 +15,7 @@ import {
   PostJob,
   Profile,
   Register,
+  DetailJob,
   ResetPassword,
   UpdatePassword,
  } from '../screens'
@@ -43,6 +44,7 @@ const AppRouter = () => {
         <Nav />
         <Switch>
           <Route exact path={navigation.HOME} component={Home} />
+          <Route exact path={navigation.DETAIL_JOB} component={DetailJob} />
 
           <ProtectedRoute 
             exact 
@@ -69,6 +71,7 @@ const AppRouter = () => {
             path={navigation.REGISTER} 
             component={Register} 
           />
+          
           <PublicRouter 
             exact 
             isAuth={isAuthenticated} 

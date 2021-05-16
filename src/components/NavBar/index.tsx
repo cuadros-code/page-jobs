@@ -40,13 +40,13 @@ const Index = () => {
               <li>Perfil</li> 
             </LinkUserPerfil>
             
-            <SignUpLink to={navigation.HOME} onClick={logout}>
-              <li>Cerrar sesión</li>
-            </SignUpLink>
-
             <IconUser to={navigation.PROFILE} >
                 <Avatar src={(user?.photoUrl) ? user.photoUrl : ''} />
             </IconUser>
+
+            <SignUpLink to={navigation.HOME} onClick={logout}>
+              <li>Cerrar sesión</li>
+            </SignUpLink>
           </>
         :
           <SignUpLink 
@@ -71,6 +71,7 @@ export default Index
 
 const IconUser = styled(Link)`
   margin-left: 1rem;
+  margin-right: 1rem;
   @media screen and (max-width : 780px){
     display: none;
   }

@@ -22,6 +22,7 @@ export interface PostData {
 export interface PostState {
   lastPost  : PostData[] | null,
   activePost: PostData | null,
+  postById: PostData | null,
   postByUser: PostData[] | null
 }
 
@@ -29,6 +30,7 @@ interface PostContextProps {
   postState     : PostState,
   getLastPost   : () => void
   getPostByUser : (userId: string) => void
+  getPostById   : (postId : string) => void
   addJob        : (jobData: PostData, userId: string) => void,
   deletePost    : (postId : string, userId: string) => void
 }

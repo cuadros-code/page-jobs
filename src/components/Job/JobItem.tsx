@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { colors } from '../../theme';
 import { PostData } from '../../context/post/PostContext';
+import { useHistory } from 'react-router';
 
 interface Props {
   job: PostData
@@ -10,11 +11,16 @@ interface Props {
 
 const JobItem = ( { job } : Props) => {
 
-
+  const history = useHistory()
+  
+  const onClickJob = () => {
+    history.push(`/job/${job.id}`)
+  }
+  
 
   return (
     <>
-      <Container>
+      <Container onClick={onClickJob} >
         <Label variant="h6" color="primary">{job.jobTitle}</Label>
         <Label variant="subtitle1" color="primary">{job.companyName}</Label>
         <Location>
@@ -26,7 +32,7 @@ const JobItem = ( { job } : Props) => {
           <Description 
           variant="subtitle2" 
           dangerouslySetInnerHTML={
-            {__html: job.description?.toString().slice(0, 200).concat('...')}} 
+            {__html: job.description?.toString().slice(0, 600).concat('...')}} 
           > 
           </Description>
         }
@@ -62,6 +68,16 @@ const Label = styled(Typography)`
 `
 const Description = styled(Typography)`
  padding-bottom: 10px ;
-   
-
+ border-bottom: 1px solid #e1e1e1;
+ word-break: break-word;
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+line-height: 16px; /* fallback */
+max-height: 32px; /* fallback */
+-webkit-line-clamp: 6; /* number of lines to show */
+-webkit-box-orient: vertical;
+:hover{
+  background-color: #f1f3f8;
+}
 `

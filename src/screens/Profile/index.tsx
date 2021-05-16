@@ -27,7 +27,9 @@ const Index = () => {
         </ContentButton>
         <TableContent>
           {
-            postByUser && <TablePost postByUser={postByUser} />
+            (postByUser) 
+            ? <TablePost postByUser={postByUser} /> 
+            : <h2>No hay empleos publicados</h2>
           }
         </TableContent>
     </Container>
@@ -37,7 +39,7 @@ const Index = () => {
 export default Index
 
 const Container = styled.div`
-  padding: 15px;
+  padding: 2rem;
 `
 const ContentButton = styled.div`
   display: flex;

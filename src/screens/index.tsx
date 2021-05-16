@@ -1,10 +1,11 @@
 import Home from './Home'
 import Profile from './Profile'
 import Login from './Login'
+import PostJob from './Jobs'
 import Register from './Register'
+import DetailJob from './DetailJob'
 import ResetPassword from './ResetPassword'
 import UpdatePassword from './UpdatePassword'
-import PostJob from './Jobs'
 
 export {
   Home,
@@ -12,6 +13,7 @@ export {
   Profile,
   PostJob,
   Register,
+  DetailJob,
   ResetPassword,
   UpdatePassword,
 }

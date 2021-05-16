@@ -5,6 +5,7 @@ const pathsNavigation = {
   REGISTER       : '/register',
   POST_JOB       : '/profile/post-job',
   RESET_PASSWORD : '/reset',
+  DETAIL_JOB     : '/job/:id',
 }
 
 export default pathsNavigation

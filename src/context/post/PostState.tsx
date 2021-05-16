@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 export const PostInitialState : PostState = {
   activePost  : null,
   lastPost    : null,
+  postById : null,
   postByUser  : null
 }
 const PostStateProvider = (props:{ children: JSX.Element}) => {
@@ -41,7 +42,6 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
     }
   }
   
-
   const addJob = async (jobData: PostData, userId: string) => {
     try {
       const timePost =  Date.now()
@@ -72,13 +72,18 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
                               .where('userId', '==', userId)
                               .get()
 
-        let jobs : PostData[] = [] 
-        jobsRef.docs.forEach( doc => {
-          jobs.push({
-            id: doc.id,
-            ...doc.data()
+        let jobs : PostData[] | null = []
+
+        if(jobsRef.docs.length >= 1 ){
+          jobsRef.docs.forEach( doc => {
+            jobs!.push({
+              id: doc.id,
+              ...doc.data()
+            })
           })
-        })
+        }else{
+          jobs = null
+        }
 
         dispatch({
           type    : 'jobsByUser',
@@ -92,6 +97,30 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
           text : 'Error al obtener tus publicaciones',
         })
       }
+  }
+
+  const getPostById = async (postId: string) => {
+    try {
+      const jobsRef = await firestore
+                    .collection(references.refJob)
+                    .doc(postId)
+                    .get()
+
+      let job = {};
+      job = ( { id: jobsRef.id, ...jobsRef.data()} )
+
+      dispatch({
+        type: 'postById',
+        payload : job
+      })
+      
+    } catch (error) {
+      Swal.fire({
+        icon : 'error',
+        title: 'Oops...',
+        text : 'El empleo ya fue eliminado',
+      })
+    }
   }
   
   const deletePost = ( postId : string, userId: string ) => {
@@ -135,6 +164,7 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
         postState,
         addJob,
         deletePost,
+        getPostById,
         getLastPost,
         getPostByUser,
       }}
