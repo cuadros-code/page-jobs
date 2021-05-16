@@ -65,6 +65,30 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
     }
   }
 
+  const updateJob = async (jobData: PostData, userId: string) => {
+    try {
+      const timePost =  Date.now()
+      await firestore
+            .collection(references.refJob)
+            .doc(jobData.id)
+            .update({...jobData, timePost})
+                        
+      Swal.fire({
+          icon : 'success',
+          title: 'El empleo fue actualizado',
+        })
+      
+      getPostByUser(userId)
+      
+    } catch (error) {
+      Swal.fire({
+        icon : 'error',
+        title: 'Oops...',
+        text : 'Error al publicar empleo',
+      })
+    }
+  }
+
   const getPostByUser = async ( userId: string ) => {
       try {
         const jobsRef = await firestore
@@ -122,6 +146,30 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
       })
     }
   }
+
+  const editPost = async (postId: string) => {
+    try {
+      const jobsRef = await firestore
+                    .collection(references.refJob)
+                    .doc(postId)
+                    .get()
+
+      let job = {};
+      job = ( { id: jobsRef.id, ...jobsRef.data()} )
+
+      dispatch({
+        type: 'editPost',
+        payload : job
+      })
+      
+    } catch (error) {
+      Swal.fire({
+        icon : 'error',
+        title: 'Oops...',
+        text : 'Error al obtener empleo',
+      })
+    }
+  }
   
   const deletePost = ( postId : string, userId: string ) => {
     try {
@@ -163,6 +211,8 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
       value={{
         postState,
         addJob,
+        editPost,
+        updateJob,
         deletePost,
         getPostById,
         getLastPost,

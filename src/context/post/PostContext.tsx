@@ -29,8 +29,10 @@ export interface PostState {
 interface PostContextProps {
   postState     : PostState,
   getLastPost   : () => void
+  updateJob     : (jobData: PostData, userId: string) => void,
   getPostByUser : (userId: string) => void
   getPostById   : (postId : string) => void
+  editPost      : (postId : string) => void
   addJob        : (jobData: PostData, userId: string) => void,
   deletePost    : (postId : string, userId: string) => void
 }

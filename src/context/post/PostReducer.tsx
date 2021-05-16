@@ -5,6 +5,7 @@ type PostAction =
   | { type: 'jobsByUser', payload: PostData[] | null }
   | { type: 'lastPost', payload: PostData[] }
   | { type: 'postById', payload: PostData }
+  | { type: 'editPost', payload: PostData }
 
 const PostReducer = (state: PostState, action: PostAction) : PostState => {
 
@@ -27,6 +28,11 @@ const PostReducer = (state: PostState, action: PostAction) : PostState => {
       return {
         ...state,
         postById: action.payload
+      }
+    case 'editPost':
+      return {
+        ...state,
+        activePost: action.payload
       }
   
     default:

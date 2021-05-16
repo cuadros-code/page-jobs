@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import {PostData} from '../../context/post/PostContext'
 
 import {FormControl,
         Select,
@@ -21,10 +22,11 @@ const PostJob = ( { history } : RouteComponentProps ) => {
 
   const [description, setDescription] = useState('');
   const [error, setError] = useState<FormAddRegister | null>()
-  const { addJob } = useContext(PostContext)
+  const { postState: { activePost }, addJob, updateJob } = useContext(PostContext)
   const { authState: {user} } = useContext(AuthContext)
   
-  const { formValue, onChange } = useForm({
+  
+  const { formValue, onChange, setValues, reset } = useForm({
     companyName   : '',
     jobTitle      : '',
     location      : '',
@@ -34,6 +36,14 @@ const PostJob = ( { history } : RouteComponentProps ) => {
     link          : ''
   })
 
+  useEffect(() => {
+    if(activePost){
+      setValues(activePost)
+      setDescription(activePost.description!)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePost])
+
   const { companyName,
           jobTitle, 
           location, 
@@ -42,8 +52,9 @@ const PostJob = ( { history } : RouteComponentProps ) => {
           vacancyNumbers,
           link  } = formValue
 
-  const handleSubmit = ( e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+  const handleSubmit = ( ) => {
+    // e: React.FormEvent<HTMLFormElement>
+    // e.preventDefault()
     const errors = validateAddJob({...formValue, description})
     if (Object.keys(errors).length > 0) return setError({...errors})
 
@@ -53,14 +64,21 @@ const PostJob = ( { history } : RouteComponentProps ) => {
       history.push(pathsNavigation.PROFILE)
     }, 1000);
     setError(null)
+    reset()
   }
 
+  const handleUpdateJob = () => {
+    if(user?.uid) updateJob({...formValue, description}, user?.uid)
+    history.push(pathsNavigation.PROFILE)
+    reset()
+  }
+  
   
   
   return (
     <Container>
       <Form
-        onSubmit={(e) => handleSubmit(e)}
+        // onSubmit={(e) => handleSubmit(e)}
         noValidate
       >
       
@@ -168,7 +186,19 @@ const PostJob = ( { history } : RouteComponentProps ) => {
         {
           error?.description && <AlertError>{error.description}</AlertError>
         }
-        <GeneralButton title="Publicar empleo" />
+        {
+          activePost
+          ?
+          <GeneralButton 
+            title="Actualizar empleo"
+            onClick={handleUpdateJob}  
+            />
+            :
+            <GeneralButton 
+            onClick={handleSubmit}  
+            title="Publicar empleo" 
+          />
+        }
       </Form>
       
     </Container>

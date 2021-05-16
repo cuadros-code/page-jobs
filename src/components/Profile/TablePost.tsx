@@ -1,5 +1,7 @@
 import { Table, TableBody, TableCell,TableContainer,TableHead , TableRow,Paper  } from '@material-ui/core'
 import { useContext } from 'react'
+import { useHistory } from 'react-router'
+import pathsNavigation from '../../constant/pathsNavigation'
 import { AuthContext } from '../../context/auth/AuthContext'
 import { PostContext, PostData } from '../../context/post/PostContext'
 import formatDate from '../../helpers/formatDate'
@@ -12,7 +14,8 @@ interface Props {
 
 const TablePost = ( { postByUser }: Props ) => {
 
-  const { deletePost } = useContext(PostContext)
+  const history = useHistory()
+  const { deletePost, editPost } = useContext(PostContext)
   const { authState:{user} } = useContext(AuthContext)
 
   const handleDeletePost = ( postId : string ) => {
@@ -45,7 +48,13 @@ const TablePost = ( { postByUser }: Props ) => {
                         width="100px"
                         onClick={ () => { row.id && handleDeletePost(row.id) }}
                       />
-                      <GeneralButton title="Editar" width="100px" />
+                      <GeneralButton 
+                        onClick={() => {
+                          editPost(row.id!)
+                          history.push(pathsNavigation.POST_JOB)
+                        }}
+                        title="Editar" 
+                        width="100px" />
                     </TableCell>
                   </TableRow>
                 ))}
