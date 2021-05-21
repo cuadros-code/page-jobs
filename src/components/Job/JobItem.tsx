@@ -67,17 +67,21 @@ const Label = styled(Typography)`
  padding-bottom: 10px ;
 `
 const Description = styled(Typography)`
- padding-bottom: 10px ;
- border-bottom: 1px solid #e1e1e1;
- word-break: break-word;
-overflow: hidden;
-text-overflow: ellipsis;
-display: -webkit-box;
-line-height: 16px; /* fallback */
-max-height: 32px; /* fallback */
--webkit-line-clamp: 6; /* number of lines to show */
--webkit-box-orient: vertical;
-:hover{
-  background-color: #f1f3f8;
-}
-`
+  padding-bottom: 10px ;
+  display : -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  `
+  /*border-bottom: 1px solid #e1e1e1;
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 16px; 
+  max-height: 32px; 
+  -webkit-line-clamp: 6; 
+  -webkit-box-orient: vertical;
+  :hover{
+    background-color: #f1f3f8;
+  }*/

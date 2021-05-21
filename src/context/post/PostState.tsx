@@ -77,6 +77,10 @@ const PostStateProvider = (props:{ children: JSX.Element}) => {
           icon : 'success',
           title: 'El empleo fue actualizado',
         })
+
+      dispatch({
+        type: 'postSuccessEdit'
+      })
       
       getPostByUser(userId)
       

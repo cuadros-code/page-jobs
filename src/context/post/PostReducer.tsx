@@ -6,6 +6,7 @@ type PostAction =
   | { type: 'lastPost', payload: PostData[] }
   | { type: 'postById', payload: PostData }
   | { type: 'editPost', payload: PostData }
+  | { type: 'postSuccessEdit'}
 
 const PostReducer = (state: PostState, action: PostAction) : PostState => {
 
@@ -34,7 +35,11 @@ const PostReducer = (state: PostState, action: PostAction) : PostState => {
         ...state,
         activePost: action.payload
       }
-  
+    case 'postSuccessEdit':
+      return {
+        ...state,
+        activePost: null
+    }
     default:
       return state
   }
